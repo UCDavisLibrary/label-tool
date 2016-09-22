@@ -1,38 +1,27 @@
-# \<scribeAPI-vision\>
+# scribeAPI-tools [![Build Status](https://secure.travis-ci.org/quinn/scribeAPI-tools.png?branch=master)](http://travis-ci.org/quinn/scribeAPI-tools)
 
-Uses Google cloud vision to fill in scribeAPI mark and transcribe
+Client scribeAPI tools
 
-## Install the Polymer-CLI
+## Getting Started
+Install the module with: `npm install scribeAPI-tools`
 
-First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
-
-## Viewing Your Application
-
-```
-$ polymer serve
+```javascript
+var scribeAPI_tools = require('scribeAPI-tools');
+scribeAPI_tools.awesome(); // "awesome"
 ```
 
-## Building Your Application
+## Documentation
+_(Coming soon)_
 
-```
-$ polymer build
-```
+## Examples
+_(Coming soon)_
 
-This will create a `build/` folder with `bundled/` and `unbundled/` sub-folders
-containing a bundled (Vulcanized) and unbundled builds, both run through HTML,
-CSS, and JS optimizers.
+## Contributing
+In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
-You can serve the built versions by giving `polymer serve` a folder to serve
-from:
+## Release History
+_(Nothing yet)_
 
-```
-$ polymer serve build/bundled
-```
-
-## Running Tests
-
-```
-$ polymer test
-```
-
-Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
+## License
+Copyright (c) 2016 Quinn Hart  
+Licensed under the MIT license.

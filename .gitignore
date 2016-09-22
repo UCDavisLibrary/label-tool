@@ -1,2 +1,3 @@
-# Ignore Bower Stuff
+# Ignore some installation files
 bower_components
+node_modules
