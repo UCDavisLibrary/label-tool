@@ -1,0 +1,34 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`scribeAPI-fetch`
+Uses Google cloud fetch to fill in scribeAPI mark and transcribe
+
+@demo demo/index.html
+-->
+
+<dom-module id="scribeAPI-fetch">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]</h2>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'scribeAPI-fetch',
+
+      properties: {
+        prop1: {
+          type: String,
+          value: 'scribeAPI-fetch',
+        },
+      },
+
+    });
+  </script>
+</dom-module>

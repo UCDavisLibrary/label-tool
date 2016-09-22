@@ -1,0 +1,36 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="scribeAPI-fetch.html">
+
+
+<!--
+`scribeAPI-vision`
+Uses Google cloud vision to fill in scribeAPI mark and transcribe
+
+@demo demo/index.html
+-->
+
+<dom-module id="scribeAPI-vision">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]</h2>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'scribeAPI-vision',
+
+      properties: {
+        prop1: {
+          type: String,
+          value: 'scribeAPI-vision',
+        },
+      },
+
+    });
+  </script>
+</dom-module>
