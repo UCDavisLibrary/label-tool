@@ -1,12 +1,18 @@
 {
   "name": "scribeAPI-tools",
-  "description": "Client scribeAPI tools",
   "version": "0.1.0",
+  "description": "Client scribeAPI tools",
   "homepage": "https://github.com/qjhart/scribeAPI-tools",
   "author": {
     "name": "Quinn Hart",
-    "email": "qjhart@ucdavis.edu"
+    "email": "qjhart@ucdavis.edu",
+    "url": "qjhart.github.io"
   },
+  "files": [
+    "dist"
+  ],
+  "main": "lib/scribeAPI-tools",
+  "keywords": [],
   "repository": {
     "type": "git",
     "url": "git://github.com/qjhart/scribeAPI-tools.git"
@@ -20,18 +26,43 @@
       "url": "https://github.com/qjhart/scribeAPI-tools/blob/master/LICENSE-MIT"
     }
   ],
-  "main": "lib/scribeAPI-tools",
   "engines": {
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "grunt nodeunit"
+    "test": "gulp",
+    "prepublish": "gulp prepublish"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.4",
     "grunt-contrib-nodeunit": "~0.2.0",
     "grunt-contrib-watch": "~0.5.3",
-    "grunt": "~0.4.5"
+    "grunt": "~0.4.5",
+    "eslint": "^3.1.1",
+    "eslint-config-xo-space": "^0.14.0",
+    "babel-eslint": "^6.1.2",
+    "eslint-plugin-babel": "^3.3.0",
+    "gulp": "^3.9.0",
+    "gulp-eslint": "^2.0.0",
+    "gulp-exclude-gitignore": "^1.0.0",
+    "gulp-line-ending-corrector": "^1.0.1",
+    "gulp-istanbul": "^1.0.0",
+    "gulp-mocha": "^2.0.0",
+    "gulp-plumber": "^1.0.0",
+    "gulp-nsp": "^2.1.0",
+    "gulp-coveralls": "^0.1.0",
+    "gulp-babel": "^6.1.2",
+    "del": "^2.0.2",
+    "babel-core": "^6.11.4",
+    "babel-register": "^6.9.0",
+    "babel-preset-es2015": "6.9.0",
+    "isparta": "^4.0.0"
   },
-  "keywords": []
+  "eslintConfig": {
+    "extends": "xo-space",
+    "env": {
+      "mocha": true
+    }
+  },
+  "license": "MIT"
 }

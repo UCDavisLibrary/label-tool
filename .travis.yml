@@ -2,5 +2,9 @@ language: node_js
 node_js:
   - 0.8
   - '0.10'
+  - v6
+  - v5
+  - v4
+  - '0.12'
 before_script:
-  - npm install -g grunt-cli
+  - 'npm install -g grunt-cli'
