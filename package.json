@@ -1,0 +1,43 @@
+{
+  "name": "scribe-api-vision",
+  "description": "Client Tools for scribeAPI",
+  "version": "0.1.0",
+  "homepage": "https://github.com/qjhart/scribe-api-vision",
+  "author": {
+    "name": "Quinn Hart",
+    "url": "https:/qjhart.github.io/",
+    "email": "qjhart@ucdavis.edu"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/qjhart/scribe-api-vision.git"
+  },
+  "bugs": {
+    "url": "https://github.com/qjhart/scribe-api-vision/issues"
+  },
+  "license": "MIT",
+  "keywords": [
+    "cli",
+    "command line"
+  ],
+  "preferGlobal": true,
+  "bin": {
+    "scribe-api-tools": "cli.js"
+  },
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.12"
+  },
+  "scripts": {
+    "test": "xo --space && node test.js"
+  },
+  "dependencies": {
+    "bluebird": "^2.10.0",
+    "chalk": "^1.0.0",
+    "meow": "^3.1.0"
+  },
+  "devDependencies": {
+    "ava": "0.0.4",
+    "xo": "*"
+  }
+}
