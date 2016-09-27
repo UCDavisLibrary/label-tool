@@ -1,2 +1,7 @@
 # Ignore Bower Stuff
 bower_components
+node_modules
+
+# Emacs Stuff
+*~
+\#*

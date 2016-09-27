@@ -1,0 +1,17 @@
+#! /usr/bin/env node --max-old-space-size=4096
+
+var program = require('commander');
+var sprintf = require('sprintf-js').sprintf;
+var async = require('async');
+
+console.log('ARGV:'+process.argv);
+
+program
+  .version(require('../package.json').version)
+  .option('-v, --verbose', 'Verbose output',false)
+  .option('-s, --scribe', 'URL of scribe client','http://labelthis.lib.ucdavis.edu')
+  .parse(process.argv);
+
+
+console.log('ARGV:'+process.argv);
+

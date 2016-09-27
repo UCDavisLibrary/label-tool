@@ -1,0 +1,30 @@
+{
+  "name": "scribeAPI-vision",
+  "version": "0.0.1",
+  "description": "Client Tools for scriptAPI",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "commander": "^2.9.0",
+    "sprintf-js": "^1.0.3",
+    "superagent": "^2.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qjhart/scribeAPI-vision.git"
+  },
+  "keywords": [
+    "scribeAPI"
+  ],
+  "author": "Quinn Hart <qjhart@ucdavis.edu>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/qjhart/scribeAPI-vision/issues"
+  }
+}
