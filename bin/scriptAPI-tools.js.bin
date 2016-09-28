@@ -1,17 +1,42 @@
 #! /usr/bin/env node --max-old-space-size=4096
+'use strict'
 
 var program = require('commander');
-var sprintf = require('sprintf-js').sprintf;
-var async = require('async');
-
-console.log('ARGV:'+process.argv);
+var ScribeApi = require('../lib/ScribeApi.js');
 
 program
   .version(require('../package.json').version)
+  .usage('[options] <cmd> [cmd-options]')
   .option('-v, --verbose', 'Verbose output',false)
-  .option('-s, --scribe', 'URL of scribe client','http://labelthis.lib.ucdavis.edu')
-  .parse(process.argv);
+  .option('-s, --scribe [url]', 'URL of scribe client','http://labelthis.lib.ucdavis.edu');
+
+program.command('list <id> [other_ids...]')
+  .action(function (id, otherIds) {
+    console.log('List with:\n');
+    console.log('--scribe=%s',program.scribe);
+    console.log('list %s', id);
+    if (otherIds) {
+      otherIds.forEach(function (id) {
+        console.log('list %s', id);
+      });
+    }});
+
+program.command('vision <url> [urls....]')
+  .option('-k, --vision-key [key]', 'Google Vision API key')
+  .action(function (url,urls) {
+    var cmd=program.args[program.args.length-1];
+    debugger;
+    var scribe=new ScribeApi({scribe:program.scribe,
+                              vision_key:cmd.vision_key
+                             });
+    scribe.detectLabels(url,function (err, labels) {
+      if (err) {
+        console.log('Error',err);
+//        return callback(err);
+      }
+      console.log('Found label: ' + labels[0].desc + ' for ' + inputFile);
+    });
+  });
 
 
-console.log('ARGV:'+process.argv);
-
+program.parse(process.argv);
