@@ -1,6 +1,18 @@
-# \<scribeAPI-vision\>
+# Label-Tool
 
-Uses Google cloud vision to fill in scribeAPI mark and transcribe
+*LabelTool* is a nodejs library, associated command-line tool and potentially a
+polymer component, to help with wine label annotation development.
+
+# Library use
+
+# Command Line Development
+
+# Postgresql
+
+
+# \<label-tool\>
+
+The polymer components are not yet developed
 
 ## Install the Polymer-CLI
 

@@ -5,3 +5,13 @@ node_modules
 # Emacs Stuff
 *~
 \#*
+.#*
+
+# Downloads
+*.zip
+
+# Protege Stuff
+
+# Examples
+examples/napa_ava/gis.napa.ca.gov
+examples/napa_ava/*.pg

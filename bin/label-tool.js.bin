@@ -1,0 +1,63 @@
+#! /usr/bin/env node --max-old-space-size=4096
+'use strict'
+
+var program = require('commander');
+var LabelTool = require('../lib/LabelTool.js');
+
+program
+  .version(require('../package.json').version)
+  .usage('[options] <cmd> [cmd-options]')
+//  .option('-v, --verbose', 'Verbose output',false)
+  .option('-s, --scribe [url]', 'URL of scribe client','http://labelthis.lib.ucdavis.edu');
+
+program.command('list <id> [other_ids...]')
+  .action(function (id, otherIds) {
+    console.log('List with:\n');
+    console.log('--scribe=%s',program.scribe);
+    console.log('list %s', id);
+    if (otherIds) {
+      otherIds.forEach(function (id) {
+        console.log('list %s', id);
+      });
+    }});
+
+program.command('vision <url> [urls....]')
+  .option('-k, --vision-key [key]', 'Google Vision API key')
+  .option('-v, --verbose','Be verbose',true)
+  .option('-t, --text','Include Text Detection',false)
+  .option('-l, --labels','Include Label Detection',false)
+  .option('-p, --properties','Include Image Properties',false)
+  .action(function (url,urls) {
+    var cmd;
+    program.commands.forEach(function(f) {
+      if (f._name==='vision') cmd=f;
+    });
+    debugger;
+    var lt=new LabelTool({scribe:program.scribe,
+                          vision_key:cmd.vision_key
+                         });
+    urls.unshift(url);
+
+    // Get types
+    var types=[];
+    if (cmd.text) types.push('text');
+    if (cmd.labels) types.push('labels');
+    if (cmd.properties) types.push('properties');
+
+    var opts={
+      verbose:cmd.verbose,
+      types:types
+    };
+
+    function cb(err,labels) {
+      if (err) {
+        console.log('Error',err);
+      }
+      console.log(JSON.stringify(labels,null,2));
+    }
+
+    // Just Google vision detection
+    lt.detect(urls,opts,cb);
+  });
+
+program.parse(process.argv);
