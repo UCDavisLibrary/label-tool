@@ -1,13 +1,16 @@
 {
-  "name": "scribeAPI-vision",
+  "name": "label-tool",
   "version": "0.0.1",
-  "description": "Client Tools for scriptAPI",
-  "main": "index.js",
+  "description": "Client Tools for Wine Labels",
+  "main": "lib/LabelTool.js",
   "directories": {
     "test": "test"
   },
+  "bin": {
+    "label-tool": "bin/label-tool.js.bin"
+  },
   "files": [
-    "dist"
+    "lib"
   ],
   "scripts": {
     "test": "test/"
@@ -16,22 +19,28 @@
     "@google-cloud/vision": "^0.3.0",
     "arrify": "^1.0.1",
     "commander": "^2.9.0",
+    "level": "^1.4.0",
+    "level-browserify": "^1.1.0",
+    "levelgraph": "^1.3.1",
+    "n3": "^0.8.1",
     "sprintf-js": "^1.0.3",
-    "superagent": "^2.3.0"
+    "superagent": "^2.3.0",
+    "wikidata-sdk": "^4.0.6"
   },
   "devDependencies": {
     "babel-cli": "^6.14.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/qjhart/scribeAPI-vision.git"
+    "url": "https://github.com/ucdlibrary/label-tool.git"
   },
   "keywords": [
-    "scribeAPI"
+    "Wine",
+    "Labels"
   ],
   "author": "Quinn Hart <qjhart@ucdavis.edu>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/qjhart/scribeAPI-vision/issues"
+    "url": "https://github.com/ucdlibrary/label-tool/issues"
   }
 }

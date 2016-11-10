@@ -1,13 +1,35 @@
-#! /usr/bin/env node --max-old-space-size=4096
+#! /usr/bin/env node
 'use strict'
 
-var program = require('commander');
-var LabelTool = require('../lib/LabelTool.js');
+const program = require('commander');
+var LabelTool = require('label-tool');
+const path= require('path');
+const fs=require('fs');
+const n3=require('n3');
+
+function optionList(val) {
+  return val.split(',');
+}
+
+program.thisCmd= function(match) {
+  program.commands.forEach(function(f) {
+    if (f._name===match) return f;
+  });
+}
+
+program.filePath=function(file) {
+  if (! path.isAbsolute(file)) {
+    file=path.normalize(path.join(process.cwd(),file));
+  }
+  return file;
+}
 
 program
-  .version(require('../package.json').version)
+//  .version(require('../package.json').version)
   .usage('[options] <cmd> [cmd-options]')
-//  .option('-v, --verbose', 'Verbose output',false)
+  .option('-v, --verbose', 'Verbose output',false)
+  .option('-n, --dry-run', 'Only report actions',false)
+  .option('--db [file]','LevelDown Database','label.db')
   .option('-s, --scribe [url]', 'URL of scribe client','http://labelthis.lib.ucdavis.edu');
 
 program.command('list <id> [other_ids...]')
@@ -21,43 +43,117 @@ program.command('list <id> [other_ids...]')
       });
     }});
 
+program.command('initialize')
+.action(function() {
+  var cmd=program.thisCmd('initialize');
+  var lt=new LabelTool()
+    .db(program.filePath(program.db));
+
+  var data=lt.initialize();
+
+  console.log(JSON.stringify(data));
+});
+
+program.command('n3')
+  .option('--output [file]','Output File')
+.action(function() {
+  var cmd=program.thisCmd('n3');
+  var lt=new LabelTool()
+    .db(program.filePath(program.db));
+
+  var writer = n3.Writer(process.stdout, {
+    prefixes: lt.prefixes
+  });
+
+  var stream = lt.db.getStream({});
+  stream.on("data", function(data) {
+//    console.log(o.text[0].desc);
+    writer.addTriple(data.subject,
+                     data.predicate,
+                     data.object,data.graph);
+  });
+  stream.on("end", function() {
+    //writer.end();
+  });
+});
+
+program.command('tsv [file]')
+  .option('--tsv [file','File to upload')
+.action(function(file) {
+  var cmd=program.thisCmd('tsv');
+  const readline = require('readline');
+
+  // Read in Filename
+  file=program.filePath(file);
+  const rl = readline.createInterface({
+    input: fs.createReadStream(file)
+  });
+
+  // Set levelgraph database
+  var lt=new LabelTool()
+    .db(program.filePath(program.db));
+
+  rl.on('line', function (line) {
+    var so=line.split('\t');
+    lt.put([so[0]],['googleVision'],so[1]);
+  });
+});
+
 program.command('vision <url> [urls....]')
-  .option('-k, --vision-key [key]', 'Google Vision API key')
-  .option('-v, --verbose','Be verbose',true)
-  .option('-t, --text','Include Text Detection',false)
-  .option('-l, --labels','Include Label Detection',false)
-  .option('-p, --properties','Include Image Properties',false)
+  .option('-a, --auth [auth_file]', 'Google Vision Authorization')
+  .option('--brief','brief (non-verbose) outputs from Vision')
+  .option('--hash','JSON output has results hashed to input urls')
+  .option('--type <types>','Look for [text|labels|landmarks|logos|properties|faces]',
+          optionList,['text','labels','landmarks','logos','properties'])
   .action(function (url,urls) {
-    var cmd;
-    program.commands.forEach(function(f) {
-      if (f._name==='vision') cmd=f;
-    });
-    debugger;
-    var lt=new LabelTool({scribe:program.scribe,
-                          vision_key:cmd.vision_key
-                         });
+    var cmd = program.thisCmd('vision');
+    var lt=new LabelTool;
+    if (cmd.auth) {
+      var auth;
+      if (path.isAbsolute(cmd.auth)) {
+        auth=require(cmd.auth);
+        } else {
+          auth=require(path.normalize(path.join(process.cwd(),cmd.auth)));
+        }
+      if (program.verbose) {
+        console.error('Authorizing from %s:%s',cmd.auth,JSON.stringify(auth));
+      }
+      lt.authorize(auth);
+    } else {
+      program.help();
+    }
     urls.unshift(url);
 
     // Get types
-    var types=[];
-    if (cmd.text) types.push('text');
-    if (cmd.labels) types.push('labels');
-    if (cmd.properties) types.push('properties');
+    var types=cmd.type;
 
     var opts={
-      verbose:cmd.verbose,
+      verbose:(cmd.brief)?false:true,
       types:types
     };
 
     function cb(err,labels) {
+      var res;
       if (err) {
         console.log('Error',err);
       }
-      console.log(JSON.stringify(labels,null,2));
+      if (cmd.hash) {
+        res={};
+        for(var i=0; i<=urls.length;i++) {
+          res[urls[i]]=labels[i];
+        }
+      } else {
+        res=labels;
+      }
+      console.log(JSON.stringify(res,null,0));
     }
 
     // Just Google vision detection
-    lt.detect(urls,opts,cb);
+    if (program.dryRun) {
+      console.error('Calling vision.detect(%s,%s)',JSON.stringify(urls),JSON.stringify(opts));
+    } else {
+      lt.detect(urls,opts,cb);
+    }
   });
 
 program.parse(process.argv);
