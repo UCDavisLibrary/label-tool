@@ -2,28 +2,27 @@
 
 <html>
   <head>
-    <title>scribeAPI-vision test</title>
+    <title>label-tool test</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
 
-    <link rel="import" href="../scribeAPI-vision.html">
+    <link rel="import" href="../label-tool.html">
   </head>
   <body>
 
     <test-fixture id="basic">
       <template>
-        <scribeAPI-vision></scribeAPI-vision>
+        <label-tool></label-tool>
       </template>
     </test-fixture>
 
     <script>
       suite('scribeAPI-vision', function() {
-
         test('instantiating the element works', function() {
           var element = fixture('basic');
-          assert.equal(element.is, 'scribeAPI-vision');
+          assert.equal(element.is, 'label-tool');
         });
 
       });

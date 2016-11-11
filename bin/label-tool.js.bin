@@ -12,9 +12,13 @@ function optionList(val) {
 }
 
 program.thisCmd= function(match) {
+  var match_f;
   program.commands.forEach(function(f) {
-    if (f._name===match) return f;
+    if (f._name===match) {
+      match_f=f;
+    };
   });
+  return match_f;
 }
 
 program.filePath=function(file) {
@@ -54,10 +58,30 @@ program.command('initialize')
   console.log(JSON.stringify(data));
 });
 
-program.command('n3')
+program.command('wines')
+  .option('--format [ids|overview]','Output Format')
+.action(function() {
+  var cmd=program.thisCmd('wines');
+
+  var format=cmd.format || 'overview';
+  var lt=new LabelTool()
+    .db(program.filePath(program.db));
+
+  function cb (err,data) {
+    if(err) {
+      console.log(err);
+    } else {
+      console.log(JSON.stringify({list:data},null," "));
+    }
+  }
+  lt.wines(format,cb);
+});
+
+
+program.command('dump')
   .option('--output [file]','Output File')
 .action(function() {
-  var cmd=program.thisCmd('n3');
+  var cmd=program.thisCmd('dump');
   var lt=new LabelTool()
     .db(program.filePath(program.db));
 
@@ -67,7 +91,6 @@ program.command('n3')
 
   var stream = lt.db.getStream({});
   stream.on("data", function(data) {
-//    console.log(o.text[0].desc);
     writer.addTriple(data.subject,
                      data.predicate,
                      data.object,data.graph);
@@ -77,8 +100,34 @@ program.command('n3')
   });
 });
 
+
+program.command('parse [file]')
+  .option('--graph graph_name')
+  .action(function(file) {
+    var cmd=program.thisCmd('parse');
+    var lt=new LabelTool()
+        .db(program.filePath(program.db));
+
+    var parser = n3.Parser({ format: 'Notation3' });
+//    var streamParser = n3.StreamParser({format: 'Notation3'});
+
+    file=program.filePath(file);
+    var in_stream = fs.createReadStream(file);
+
+//    stream.pipe(streamParser);
+
+    var put_stream=lt.db.putStream();
+    parser.parse(in_stream,function(err,data) {
+      if (data) {
+        lt.db.put(data,function(err) {});
+      }
+    });
+
+//    streamParser.pipe(new labelToolConsumer());
+});
+
 program.command('tsv [file]')
-  .option('--tsv [file','File to upload')
+  .option('--tsv [file]','File to upload')
 .action(function(file) {
   var cmd=program.thisCmd('tsv');
   const readline = require('readline');
