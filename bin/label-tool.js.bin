@@ -85,16 +85,21 @@ program.command('dump')
   var lt=new LabelTool()
     .db(program.filePath(program.db));
 
+  console.log('in');
   var writer = n3.Writer(process.stdout, {
     prefixes: lt.prefixes
   });
+  console.log('out');
 
   var stream = lt.db.getStream({});
   stream.on("data", function(data) {
+    if (data.subject && data.predicate && data.object ) {
     writer.addTriple(data.subject,
                      data.predicate,
                      data.object,data.graph);
-  });
+    }
+    });
+
   stream.on("end", function() {
     //writer.end();
   });
@@ -119,7 +124,11 @@ program.command('parse [file]')
     var put_stream=lt.db.putStream();
     parser.parse(in_stream,function(err,data) {
       if (data) {
-        lt.db.put(data,function(err) {});
+       lt.db.put(data,function(err) {
+         if (err) {
+           console.log(err);
+         }
+       });
       }
     });
 
